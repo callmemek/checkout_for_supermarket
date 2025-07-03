@@ -29,5 +29,16 @@ class ShoppingCart:
         
         if self.items[item_name]['quantity'] == 0:
             del self.items[item_name]
-            
+        
+    def checkout (self, payment):
+        if payment < self.total:
+            raise ValueError("hmm not enough money, try again!")
+        if self.total == 0:
+            raise ValueError("your cart is empty, you can't checkout!")
+        
+        change = payment - self.total
+        self.items = {}
+        self.total = 0.0
+        return change
+        
     
