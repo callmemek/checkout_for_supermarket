@@ -84,3 +84,48 @@ class TestShoppingCart(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.cart.remove_item("candy", 0)
 
+# Unit tests for checkout
+    def test_checkout_exact_amount(self):
+        # Arrange
+        initial_total = self.cart.total
+        
+        # Act
+        change = self.cart.checkout(initial_total)
+        
+        # Assert
+        self.assertEqual(change, 0)
+        self.assertEqual(len(self.cart.items), 0)
+        self.assertEqual(self.cart.total, 0)
+
+    def test_checkout_with_change(self):
+        # Arrange
+        payment = 5.0
+        expected_change = payment - self.cart.total
+        
+        # Act
+        change = self.cart.checkout(payment)
+        
+        # Assert
+        self.assertEqual(change, expected_change)
+        self.assertEqual(len(self.cart.items), 0)
+        self.assertEqual(self.cart.total, 0)
+
+    # Edge tests for checkout
+    def test_checkout_insufficient_payment(self):
+        # Arrange
+        insufficient_payment = self.cart.total - 1.0
+        
+        # Act/Assert
+        with self.assertRaises(ValueError):
+            self.cart.checkout(insufficient_payment)
+
+    def test_checkout_empty_cart(self):
+        # Arrange
+        empty_cart = ShoppingCart()
+        
+        # Act/Assert
+        with self.assertRaises(ValueError):
+            empty_cart.checkout(10.0)
+
+if __name__ == '__main__':
+    unittest.main()
