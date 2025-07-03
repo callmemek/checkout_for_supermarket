@@ -15,3 +15,19 @@ class ShoppingCart:
             self.items[item_name] = {'quantity': quantity, 'price': price}
         
         self.total += quantity * price
+        
+    def remove_item(self, item_name, quantity):
+        if item_name not in self.items:
+            raise  ValueError("this isn't even in your cart!")
+        if quantity <= 0:
+            raise ValueError("smh you can't remove nothing!")
+        if quantity > self.items[item_name]['quantity']:
+            raise ValueError ("trying to remove more than you have")
+        
+        self.items[item_name]['quantity'] -= quantity
+        self.total -= quantity * self.items[item_name]['price']
+        
+        if self.items[item_name]['quantity'] == 0:
+            del self.items[item_name]
+            
+    
